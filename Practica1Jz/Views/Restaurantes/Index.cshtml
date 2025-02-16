@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Practica1Jz.Models.Restaurante>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Restaurantes Disponibles MVC</h1>
+
+<p>
+    <td>@Html.ActionLink("Create", "Create", new { }, new { @class = "btn btn-primary" })</td>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dueno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Provincia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Canton)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Distrito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DireccionExacta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dueno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provincia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Canton)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Distrito)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DireccionExacta)
+            </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-secondary" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Restaurantes API</title>
+</head>
+<body>
+    <h1>Restaurantes Disponibles API</h1>
+    <ul id="restaurantesList"></ul>
+
+    <script>
+        
+        const apiUrl = 'https://localhost:7246/api/RestaurantesApi';
+
+        
+        async function obtenerRestaurantes() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos');
+                }
+                const data = await response.json();
+              
+                const lista = document.getElementById('restaurantesList');
+                data.forEach(restaurante => {
+                    const li = document.createElement('li');
+                    li.textContent = `Nombre: ${restaurante.nombre}, Dueño: ${restaurante.dueno},
+                    Provincia: ${restaurante.provincia}, Cantón: ${restaurante.canton}, 
+                    Distrito: ${restaurante.distrito}`;
+                    lista.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }        
+        obtenerRestaurantes();
+    </script>
+</body>
+</html>
